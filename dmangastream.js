@@ -7,12 +7,6 @@ var cheerio = require('cheerio');
 const execSync = require('child_process').execSync;
 const args = process.argv;
 
-var getLocation = function(href) {
-    var l = document.createElement("a");
-    l.href = href;
-    return l;
-};
-
 function getMangaPage(page){
   request('https://images-onepick-opensocial.googleusercontent.com/gadgets/proxy?container=a&url='+encodeURIComponent(page), function (error, response, body) {
   console.log(page);
