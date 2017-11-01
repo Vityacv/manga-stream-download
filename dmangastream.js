@@ -19,9 +19,7 @@ function getMangaPage(page){
     if (!error && response.statusCode == 200) {
       var $ = cheerio.load(body);
       var arr = [];
-      var href = url.parse(page);
-      next = url.parse($('.next').find('a').attr('href'));
-      next = href.protocol+"//"+href.host+next.path;
+
       var img = $('.page').find('img').attr('src');
       var name = $('.hidden-sm').text().replace(/( )/gm,"")+$('.btn-primary').text().replace(/( )/gm,"").replace(/(\r\n|\n|\r)/gm,"_")+'.png';
       if(img !== undefined)
@@ -32,9 +30,15 @@ function getMangaPage(page){
         execSync(cmd);
         execSync('convert '+name+' '+name);
       }else process.exit(0);
+      var next = $('.next').find('a').attr('href');
       if(next === undefined)
         process.exit(0);
-      getMangaPage( next);
+      else {
+        var href = url.parse(page);
+        next = url.parse(next);
+        next = href.protocol+"//"+href.host+next.path;
+        getMangaPage( next);
+      }
     } else {
       console.log('Failed to download: '+page);
       process.exit(0);
