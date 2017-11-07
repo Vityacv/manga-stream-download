@@ -10,12 +10,14 @@ const args = process.argv;
 function getMangaPage(page){
   request('https://images-onepick-opensocial.googleusercontent.com/gadgets/proxy?container=a&url='+encodeURIComponent(page), function (error, response, body) {
   console.log(page);
+  var href = url.parse(page);
     if (!error && response.statusCode == 200) {
       var $ = cheerio.load(body);
       var arr = [];
 
       var img = $('.page').find('img').attr('src');
-      var name = $('.hidden-sm').text().replace(/( )/gm,"")+$('.btn-primary').text().replace(/( )/gm,"").replace(/(\r\n|\n|\r)/gm,"_")+'.png';
+      var hrefArr = href.path.split('/');
+      var name = hrefArr[2]+'_'+hrefArr[3]+'_page_'+hrefArr[5]+'.png';
       if(img !== undefined)
       {
         if(img.charAt(0)!=='h')
@@ -28,7 +30,6 @@ function getMangaPage(page){
       if(next === undefined)
         process.exit(0);
       else {
-        var href = url.parse(page);
         next = url.parse(next);
         next = href.protocol+"//"+href.host+next.path;
         getMangaPage( next);
