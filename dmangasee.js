@@ -30,7 +30,6 @@ function getMangaPage(page){
         	nextpage=1;
         	nextchapter=$('.ChapterSelect option:selected').next().first().text().split(' ').pop();
         }
-
         execSync(cmd);
         execSync('convert '+name+' '+name);
       }else process.exit(0);
@@ -41,6 +40,8 @@ function getMangaPage(page){
         var href = url.parse(page);
         next = url.parse(next);
         next = href.protocol+"//"+href.host+next.path;
+        if(nextchapter === '')
+          process.exit(0);
         getMangaPage( next);
       }
     } else {
